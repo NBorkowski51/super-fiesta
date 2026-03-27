@@ -1,0 +1,22 @@
+﻿ID,Work Item Type,Title,Test Step,Step Action,Step Expected,Automated Test Name,Area Path,Assigned To,State,Tags
+94147,Test Case,Admin Login – successful,,,,,Integrity\_Aha-HexagonPPM\Cyber\Integrity\Testing\Release Testing,PATIL Harsha <harsha.patil@hexagon.com>,Design,
+,,,1,"
+
+  Navigate
+  to the sign-in page.
+","
+  Sign-in
+  form (username/password) is visible.",,,,,
+,,,2,"
+  Enter
+  valid admin email + password; click Sign In.","
+  Redirected
+  to Admin dashboard/home.",,,,,
+,,,3,"
+  Verify
+  session is established.","
+  Session
+  token/cookie present; role = Admin.",,,,,
+,Test Case,Create Admin – happy path,,,,,Integrity\_Aha-HexagonPPM\Cyber\Integrity\Testing\Release Testing,PATIL Harsha <harsha.patil@hexagon.com>,Design,
+,,,1,Open Users > Create User.,Form loads correctly.,,,,,
+,,,2,Enter unique email and set Role = Admin; Save.,Admin user is created and listed correctly.,,,,,
