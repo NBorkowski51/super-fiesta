@@ -1,0 +1,772 @@
+﻿ID,Work Item Type,Title,Test Step,Step Action,Step Expected,Area Path,Assigned To,State
+"63241","Test Case","ISS\Cyber Integrity\Topology\ Topology map UI display, linkages, Map Image",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite: 
+Predecessor 67869 has been run","
+",,,
+,,,"2","Map Display Filter options- links Info: for Network device to Recon device
+On both VMs:
+Open Topology page
+ Click the filter icon to open Map Display Filters, enable Link Info and close the popup
+Navigate to the network switch DEVLAB-HIR-M102
+Zoom in enough to see the Inventory Information for Mac Addresses (which is saved in the Perspective editor which should still be selected). 
+ 
+
+
+","On both VMs this switch has a link to 2 Recon nodes
+
+ The links have a label at each end (zoom in!) which is the same on both VMs
+At the Recon end the label is similar to ""Network Adaptor.....""
+At the switch end the label is a number in the format ""x/y"" 
+See attached screenshot for an example of where to look for this information
+NOTE! IN this DB you will see to instances of a VM IAHcVPPASISQA14. This is a mistake in the DB and should be ignored for the purpose of testing
+",,,
+,,,"3","Click on the switch to select it 
+","The links are now highlighted in purple when the switch is selected and mouse over the switch
+",,,
+,,,"4","Right click the Switch > Details and in the Details, popup select MAC Tab
+
+","The Interface column number for the 2 rows with Type = Endpt match the numbers on the links at the switch end (""x/y"") that link to the 2 recon assets 
+
+The 2 rows with the link interface numbers above have the Mac addresses displayed in the Recon Nodes' Perspective information
+ The information is the same on both VMs 
+",,,
+,,,"5","Find the Switch DEVLAB-CIS-2960X","It has one Recon Device attached.
+The link has a label at each end
+At the Recon end the label similar to ""Network Adaptor.....""
+At the switch end the label is Gi/1/0/13
+",,,
+,,,"6","Right click the Switch > Details and in the Details, popup select MAC Tab
+","The Interface column number for the row with Type = Endpt matches the numbers on the link at the switch end that links to the recon node 
+
+The MAC table row with the link interface number above has the Mac address displayed in the Recon Node's Perspective information
+",,,
+,,,"7","Test link Info is correct between Network devices and LLDP Discovery assets
+ On both VMs
+ In the Details popup for Router DEVLAB-HIR-M102 select LLDP tab.
+  ","Under remote Device column, the linked switches are listed, and the LLDP Discovery Device.
+The Local Int numbers match the labels on the links to these switches/LLDP Device
+The information is the same on both VMs
+[Note: The Network linkages are not correct for all switches. There is an Aha Idea created to readdress how linkages work so until then all we can test is that the display is the same as the previous version]",,,
+,,,"8","Click on each of the 2 connected switches in turn and open Details - LLDP tab
+ 
+ ","The Remote Device column includes the DEVLAB-HIR-M102
+The Remote Int is representative of the same link as the Local Int on DEVLAB-HIR-M102, although its in a different format (e.g. port-004-00004 represents 4/4... )
+ The information is the same on both VMs",,,
+,,,"9","Click on the LLDP Discovery asset and bring up Details -Properties","The Remote Data value matches the Local Int on DEVLAB-HIR-M102 ",,,
+,,,"10","Test Map image
+ Click the image icon in tool bar","An image file is created
+When opened it shows the Topology map in its current customization: zoom, perspective editor, location",,,
+,,,"11","Test delete Perspective selection
+
+Ensure the Perspective you created in the previous test case is selected and to the right of  Select a perspective  drop down click the trash can button
+","A popup is displayed for you to confirm the deletion",,,
+,,,"12","Delete the Perspective","The Trashcan button is disabled. The map doesn't change its display",,,
+,,,"13"," click the Select a Perspective drop down","It displays 'NO DATA FOUND'",,,
+"63280","Test Case","ISS\Cyber Integrity\Topology\ Topology UI - Asset Details tabs in Prep DB",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite: Prerequsite:Restore or Connect to Prep database
+ \QASTORE01\Database Backups\Integrity Datasets_Databases\REGRESSION TEST DATABASES\X.X\Prep database where X.X is version under test
+
+On one of the Release Build VMs (IAHcVPPASSQLQA2 or IAHcVPPASISQA09) restore and connect to a release version of the same database that is located here:
+ \QASTORE01\Database Backups\Integrity Datasets_Databases\REGRESSION TEST DATABASES\Y.Y \Prep Database. Where Y.Y is the released version of integrity
+
+","
+",,,
+,,,"2","iisreset
+ Navigate to Cyber web page - Top level Location is selected
+ Go to Asset hierarchy and expand the parent nodes GASYNB* and each sub nodes 
+DMZ*.
+  Select each of the Recon data owners (there is one in each DMZ* and one directly under GASYNB) 
+Expand them and drill down through the tree until you see the PC object icon(s) for the PC names
+Get a screenshot ","
+",,,
+,,,"3","Check the expected Recon assets are displayed in Topology
+Go to Topology
+ Expand the GASYNB Group via the '+'
+Click the filter icon and in the Map Display Filters enable Navigation Menu. In the popup collapse all the other asset types apart from WORKSTATION - see attached screenshot
+","The WORKSTATION list contains the expected recon computer(s) for the sublocation you selected as seen in Asset Hierarchy",,,
+,,,"4","In the navigation popup click the PC ","The map highlights the PC you selected. It has either a pink, orange, yellow or light blue background ",,,
+,,,"5","Repeat for each sublocation. When you have tested a sublocation, collapse it again via the '-' button to free up the real estate and select the next location you expect recon devices per step 1 ","The PCs in each sublocation match the Asset hierachy ",,,
+,,,"6","Test Recon Detail Summary tab displays expected data
+Expand GASYNB Group Location and DMZ Sublocation and Select a Recon computer node that is pink in color and right click
+
+","A dial popup is displayed with one sector of the popup labelled Detail - see example screenshot",,,
+,,,"7","Select Detail","A new pop up is displayed defaulting to Summary Tab. See example screenshot
+the selected PC name is correct at the top of the popup
+The Location string at the top of the popup is correct for the data owner location
+The Asset is the Data owner name
+Object Type is Computer System
+Date Collected matches the year the data was collected  for that Asset
+There is hover text available for each field
+The Vulnerability counts are displayed at the bottom and there is at least 1 Critical CVE count representing the pink node color
+
+",,,
+,,,"8","Click each of the other tabs: Interface, ARP, Inventory, Vulnerabilities, Patches, Recon, Properties (Dont test Ports in this sublocation, the data collection doesnt have any ports information)","
+The data is the same on the VM with the test build and the release build",,,
+,,,"9","Test export to Excel
+ For each Detail tab in previous step click Export to excel
+(You will be using these in the following steps)","An excel file is created populated with all the data and columns in the tabs
+The data and row count matches between the Excels from the release and build in test",,,
+,,,"10","Test Recon details against Asset Hierarchy
+ Return to the Details popup Summary tab and note the Manufacturer, IPv4 Address, Model Number and Mac address properties
+Return to Asset Hierarchy and expand the tree for the same location, select the data owner and drill down to find the same PC and select it to display Computer Details in the right pane","The Computer Details properties display the same properties as in Topology Summary for Manufacturer, Model, Name and Network Adapter Ip4 and Mac address (found as a Network Adaptor property, probably on page 2 of the grid)",,,
+,,,"11","Change Asset Hierarchy > computer Details category to Operating System ","The Computer Details operating system (Caption) matches Topology Summary",,,
+,,,"12","In Computer Details change the dropdown to Processor to display the Processor grid.
+
+ ","Filter the Recon excel you exported from Topology on Object Type - Processor
+ Using the data in Computer Details - Processor, validate the data in the Topology Recon excel for Object type Processor is correct (Note that the excel has the prefix 'CPU' and the processor UI does not have this prefix)
+",,,
+,,,"13","In Computer Details change the drop down to BIOS","Using the data in Computer Details - BIOS, validate the data in the Topology Recon excel filtered for Object type BIOS is correct
+",,,
+,,,"14","Test Recon Inventory tab displays expected data
+Use the Inventory xls you exported from Topology to filter on a product. Note the row count in the xls. Copy the product name (make sure you have no leading or trailing spaces)
+ Navigate to Inventory > Browse> Computers. Browse by Hardware Locate the recon device from topology and click the # number of inventory items link to display the inventory popup Endpoints components for: <computer name>
+In the Search field of the popup paste in the product name you copied","The row count in the Inventory popup match the Topology Inventory xls  for the filtered product. Note!! if you picked  IAHcVPPASICQA20 then the language at the time of data collection was swedish. The UI will translate  a swedish product and pick it up in the filter - see example screenshot. The excel is not so smart and will include a filter on this
+
+",,,
+,,,"15","Test Vulnerability color coding  for High Severity
+ Return to Topology. Expand sublocation GASYNB2 and DMZ2 and find a Recon node with a orange Background in the map and right click to open Details to see the Summary tab 
+Note the Vulnerability CVE count for each severity
+","The highest severity is High representing the orange background",,,
+,,,"16","Right click on one node and click Details","In the Details tab the Vulnerability tab shows the maximum criticality has a count in High category",,,
+,,,"17","Test Recon Ports Details
+ In the tabs at the top scroll to the right to find Ports","The Ports detail is populated similar to attached screenshot",,,
+,,,"18","Test DCS Details
+ In Topology:  find a DCS node in any sublocation. 
+Drill down the DCS node tree one level
+ Right click and in the dial popup select Details","A popup defaulting to Inventory is displayed showing the DCS asset name
+NOTE!! Topology is designed for Recon and Network devices and their connections. ICS data is NOT expected to be fully representational of its inventory data and may well have no inventory data displayed in Topology
+
+",,,
+,,,"19","In the Topology DCS tree, drill down to a node at the end of the tree
+Right click > Detail > in the popup select Properties tab
+ Click in properties tab - Export to Excel
+
+","Excel is created with all the Properties data from the Topology popup tab",,,
+,,,"20","Close Properties tab and click on the Node link (see screenshot attached)
+","A separate viewer opens
+ The Viewer properties tab matches the data in the Details Property tab and the excel
+",,,
+,,,"21","Test Switch Details
+Return to Topology, expand the location node tree and select a Switch node.  Right click and in the dial popup select Details","A new pop up is displayed defaulting to Summary Tab. 
+the selected Switch name is correct at the top of the popup
+The Location string at the top of the popup is correct for the data owner location
+The Asset is the Data owner name
+Object Type is Network Device
+Date Collected matches the year the data was last collected for that Asset 
+The other available tabs are MAC, LLDP, Interface ARP, Inventory, Properties, Vulnerabilities
+The switch node background color represents the max criticality displayed in Vulnerability criticalities on the Summary tab
+
+ 
+",,,
+,,,"22","Open MAC tab","The data is similar to screenshot",,,
+,,,"23","Open LLDP tab","The data is similar to screenshot",,,
+,,,"24","Open ARP tab ","The data is similar to screenshot",,,
+,,,"25","Open Interface tab ","The data is similar to screenshot",,,
+,,,"26","Open Vulnerabilities tab","In the Details tab the Vulnerability tab shows the maximum criticality matches the background color of the tab",,,
+,,,"27","Test Switch Inventory tab displays expected data
+In the Topology Switch Details popup select Inventory tab. Export the data to Excel
+To filter out the large number of switches, change the top level location to match the location of the switch in test
+Navigate to Inventory > Browse> Network Devices Browse by Device manufacturer. Locate the network device from topology by using Search in the Inventory filters on the Model Number (found in Topology Details Summary tab)
+ Find the same Switch and click the # number of inventory items link to display the inventory popup Endpoints components for: <switch name>
+
+","The count of inventory items in the Inventory popup match the count in the Topology xls and the inventory items identifiable in both places (note that the names may not be exactly the same because they come from different tables in the database)",,,
+,,,"28","Close the popup and return to Topology.
+IN any sublocation select a Firewall
+ Open Details popup","A new pop up is displayed defaulting to Summary Tab. 
+the selected Firewall name is correct at the top of the popup
+The Location string at the top of the popup is correct for the data owner location
+The Asset is the Data owner name
+Object Type is Network Device
+Date Collected matches the year the schedule was last run for that Asset in Admin Utility
+There is hover text for every field
+The other available tabs are  LLDP, Interface ARP, Inventory, Properties
+
+",,,
+,,,"29","Display  the Properties tab and export to xls or screenshot ready for next step","
+",,,
+,,,"30","Go to Inventory > Browse > Network devices >Device manufacturer and filter on the manufacturer name to locate the same firewall device.
+Click on the device name in the grid to open properties Viewer ","The Properties are the same as seen in Topology",,,
+,,,"31","Ready for Successor TC 63314","
+",,,
+"63314","Test Case","ISS\Cyber Integrity\Topology\ Topology UI\Node association with a Group",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite: Predecessor TC Db connected
+","
+",,,
+,,,"2","Test Node association to an ICS Group within a location
+ Reopen or refresh web page if used for predecessor testing (need to do this to clear the cache of location Groups previously opened in Topology)
+Go to topology, open the top level Node and expand GASYNB and DMZ Location Groups which have Recon, switches and DCS assets
+Right click on any switch or recon node and in the dial popup select Create, wait a second and an Association flyout will appear, click Association (see screenshot)","There is a popup Associate Node to group and the drop down contains all the DCS nodes in this location only.
+(You refreshed the web page because Topology remembers all previously opened Locations even if they are currently collapsed, but you refreshed the webpage and cleared that cache so you only see the ICS Groups in the Location you have just expanded)",,,
+,,,"3","Select one of the DCS nodes in the dropdown and click Associate to Group
+Wait a few seconds","The DCS will move across the map and  the switch or recon node will disappear.
+ The DCS will be expanded so that its Group boundary background will encompass itself, the DSC, and the associated node, the recon or switch 
+If the ICS node doesnt automatically expand, click the '+' and you will see the recon or switch
+See screesnhot
+",,,
+,,,"4","Test Creating a new Node
+
+In the currently open Location Group right click in any white space","The dial popup is displayed and Create is enabled, and 2 flyouts are added for Node and Group. Both are enabled if you hover them. See screenshot example",,,
+,,,"5","Click the flyout for Node","A popup Create node is displayed with fields to populate data. See screenshot ",,,
+,,,"6","Populate all fields, in the Device Type select anything from the list. Click Create Node
+
+","The popup closes. (The node will be created somewhere in the real estate box but its a bitch to find so go to next step to verify it got created) ",,,
+,,,"7","Open the Menu icon and enable Navigation menu. Find the Devices of the Device Type you added ( e.g. if you created a Router then look in the router section. See screenshot)","Your new device is listed in the menu",,,
+,,,"8","Click on the device you created in the navigation menu","You are navigated to that device node on the map and it is highlighted.  Its icon will represent your device selectionThe icon has a cog with a pen in the top corner indicating it is a manually created Node. ",,,
+,,,"9","Test a new Nodes properties will be displayed in Perspective Editor
+Drop down the Perspective Editor Inventory list and check all of the list and Apply
+Zoom in on the topology map and navigate to the enlarged new node","All the Properties you populated when creating the node that match an Inventory property are displayed",,,
+,,,"10","Test Node association with DCS in a different  Location Group
+ Open a different top level Location Group with DCS asset(s). Screenshot the DCS Asset(s) with their names.
+Collapse the second location Group.
+Now there is a second location cached in Topology, this is the group where you will associate your new node.
+Right click on your new Node created in step 6, in the dial popup select Create and select the Associate flyout. ","There is a popup dialog Associate Node to Group. The drop down includes all the DCS assets in the second location you expanded and then collapsed",,,
+,,,"11","Select one of the ICS assets and click Associate to Group","The new node is removed from your current location group
+
+",,,
+,,,"12","Expand the second location group and navigate to the DCS asset you associated your Node with, and expand it","Your node has moved to this asset",,,
+,,,"13","Refresh the web page and return to Topology and open the location group where you associated your new node, expand the DCS where you made the association","The new node is displayed",,,
+,,,"14","In the tool bar click the Image icon and open the image png","The image includes the new node",,,
+,,,"15","Create a Favorite with a manually associated Node
+ Click the save button along side the Favorites field and enter a favorites name","
+",,,
+,,,"16","Refresh the webpage. Return to Topology and select your Favorite you just created from the Favorites drop down","The map returns to the opened location and your node is included in the DCS it is associated with",,,
+,,,"17","Test remove association of a Node
+Go to the DCS with the associated node. Right click on the new node and hover Remove, wait for the Association flyout and click it.","The node is removed from the DCS",,,
+,,,"18","Expand the original location Group where you created the node","The node is back iin that location group",,,
+,,,"19","Test Create a new Group
+Refresh the web page and expand the location group from previous step
+ In the location, group right click in free white space and in the dial popup select Create and from the flyout select Group","A Create Group popup is displayed ",,,
+,,,"20","Enter a name for the group and create it","The Group is added as a node to the current location",,,
+,,,"21","Right click on the group (you may have to wait a minute for the web page to enable the popup) In the dial popup hover Create and in the flyout click Node.","This will display the Create Node popup",,,
+,,,"22","Populate the name and in Device Type select a different object from the list from the previous node you made, and Create Node
+Wait a minute: Ensure the Group is selected (blue outline) and expand it ( the '+' is not immediately visible","The node is in the group with the expected icon representing the device type and the cog with a pencil to indicate its a manually created node",,,
+,,,"23","Test Edit Node information
+ Right click on the Node within the group and click Edit Node
+In the popup change the device type and some other properties and click Edit Node button","The node updates its icon to reflect the different device type",,,
+,,,"24","Test move a Node to a group in the same location
+Go to the first Node that you created that is now back in the current location (after step 16 above) and right click","The dial popup has enabled the segment for Group, this allows you to move an node into a Group within the current location",,,
+,,,"25","Click Group","A popup Add Node to Group is displayed with the Group you previously created listed as the only selection",,,
+,,,"26","Click Move to Group","The Node is moved into the new Group you created",,,
+"63949","Test Case","ISS\Cyber Integrity\Topology\Test Baseline details in Recon Nodes in Baseline Creation database",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite
+Predecessor TC 82654, linked,  DB connected
+Refer summary: Additional imports required:
+Network Devices
+Topology
+Network Devices asset created
+Topology Asset created
+Schedule for topology has been run
+ iisreset
+","
+",,,
+,,,"2","Go to Cyber page > Asset Hierarchy and expand the Recon DTL data owner to find the device names and note them.","
+",,,
+,,,"3","In Integrity left nav: Navigate to Baselines >Deviations
+Select the Baseline for DTL High Risk
+Filter Object Name on Contains <Devicename> and note which devices have Addition or Deletion or no deviations. Repeat for each device name
+
+ ","
+",,,
+,,,"4","Go to  Topology","The recon devices in the data owner are displayed. The Devices that have Addition deviations will have a yellow background",,,
+,,,"5","Expand Perspective Editor for Deviations","The Baselines drop down shows a total of (X) 
+'X' representing the number of Recon Nodes that have Baseline Deviations
+
+",,,
+,,,"6","Enable Disposition and Age and Apply then collapse the Perspective Editor 
+Zoom in on the Map so that the Deviations details are visible for these Recon node(s) 
+
+","The  Node(s) will show Deviations populated for Unassigned and an Age interval matching the age since the deviation occurred - see screenshot for an example of a Recon node with deviations
+
+",,,
+,,,"7","On any Node with Deviations, Right Click > Detail
+
+","The Deviations information with the count and age  is displayed at the bottom of the Summary Tab
+
+",,,
+,,,"8","Scroll along the tabs and select Baselines tab","The same counts are displayed and the grid source column lists Baseline Source objects as links in the UI.
+The Baseline name is listed and the Detected date
+
+",,,
+,,,"9","Click on one of the links in Source column","A separate viewer is displayed showing the applicable Viewers for the Recon object flagged as a deviation: The viewers can be any of the following depending on the object link:
+ Computer details, Properties Changes, Component Modifications, MOC cases, System Backup, Event Viewer, Notes
+
+",,,
+,,,"10","Return to the Topology Web tab. Click Export to Excel and open the xls","The number of data rows matches the count in the Deviations icon at the top of the popup
+The data in the excel matches the Baseline Summary popup in Topology",,,
+"67859","Test Case","ISS\Cyber Integrity\Topology\ Topology map linkages in new database",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite: New database
+  Admin Utility > Asset Models:  Import the  models:
+PAS Inventory items
+PAS Recon
+PAS Cyberintegrity
+PAS Network Devices
+PAS Topology
+ 
+The datasets are found here: \QASTORE01\zzAutomation_Data\QTP_Data\Integrity Data\PAS Network Devices\ NetworkImport
+ QASTORE01\zzAutomation_Data\QTP_Data\Integrity Data\PAS Recon Data\Integrity DTL VMs NEW\Recon DTL VMs ForTopo linkages.7z 
+ 
+Copy them locally and unzip the Recon
+Go to Admin Utility > Asset Configurations Add dataowners for Recon and Network devices 
+Under Import Folder, Browse to location of your dataset and Save
+NOTE! When the recon data is imported, the data gets modified, Always unzip the data from scratch before importing
+Go to Schedules - Add schedules for   Recon (Sequence is XML Import All)
+ and Network devices (Sequence is All). 
+Right click on the Schedules and Run
+(if run is not enabled, click the refresh icon at lower left or restart the DataCollector service) 
+
+","
+",,,
+"63256","Shared Steps",,"2","SHARED STEP: Before running latest Asset model PAS Inventory Items schedule:",,,,
+,,,"2.1","Running latest Asset model PAS Inventory Items schedule:
+Admin Utility: If you have not already done so: Import latest Inventory asset model and create an Asset 
+Ensure you have a Cyber Asset model, if not import it and create an asset
+Ensure you have Access DB Engine Office 10 64 Bit installed. If not install it from the installer ISS_Setup.exe via Additional Software link in the Installer popup
+Go to installation folder \PAS\Integrity\DataCollector\Asset Models\PAS Inventory Items and copy PASInventory.accdb to the \Datacollector folder
+ ","
+",,,
+,,,"3","Admin Utility > Asset Configurations: Add an Asset for PAS Inventoryitems called Inventory
+Under Schedule Add a schedule for Inventory
+Select sequence Create Inventory items for PAS Recon without Tree
+ Run the schedule
+","
+",,,
+"65643","Shared Steps",,"4","SHARED STEP: Create a Cyber Hierarchy with Inventory",,,,
+,,,"4.1","Build a Cyber Hierarchy
+Prerequisite: Data owners and  PAS Inventory Items schedule has been run 
+Open <Install folder>DataCollector\ConfigurationManager as Admin
+ In upper drop down select  CyberInventory.
+ Create the top-level location in the Cyber Tree: Right click in left Panel > Add Child Node and name it e.g. Plant A or Enterprise. (there may be an error popup when you do this, click OK and ignore it) 
+ 
+From Asset drop down: Select one of your Assets e.g. Recon 
+From Object Type select Data owner from drop down and the data owner name will populate in the panel below. Select the name in the Panel and drag onto the top level node. See screenshot
+Right click on the left panel and refresh and the Top Node will have a '+'. 
+ Expand '+' and you will see a sublevel node for (example) your Recon or Fox data owner - see second screenshot
+ 
+Repeat for other Recon, Network Devices and ICS assets as applicable.
+","
+",,,
+,,,"4.2","If you need inventory data perform the next steps. If you dont need inventory data you can stop here","
+",,,
+,,,"4.3","If you have ICS or DCS Assets:
+ With your ICS e.g. Fox data owner selected in Asset: From Object Type select Inventoryitem
+ When selecting ICS assets you will see multiple Inventory items, you want the one with *****DATAOWNER**** in the name 
+ Select the ***DATAOWNER*** item and drag it onto the ICS node e.g. the Fox node. See screenshot
+","
+",,,
+,,,"4.4","If you have Recon Assets:
+ With your Recon data owner selected in Asset: From Object Type select Inventory_Asset and drag the data owner name (there is only one) from the panel and drop it onto the recon node. See screenshot ","
+",,,
+,,,"4.5","If you have Network Devices Assets
+ With your Network Devices data owner selected in Asset: From Object Type select Inventory_folder and drag NetworkDevices_All  from the panel and drop it onto the Network Devices node. ","
+",,,
+,,,"4.6"," You dont need to save, it does that automatically
+ Post condition:
+ Ready for Admin Utility Schedule for Cyber 
+","
+",,,
+,,,"5","Admin Utility > Asset Configurations: Add an Asset for PAS Cyber Integrity called Cyber
+Under Schedule Add a schedule for Cyber and run it (there is only one sequence)
+Create a schedule for Topology and run it (there is only one sequence)","The topology sequence completes without errors",,,
+"48310","Shared Steps",,"6","SHARED STEP: Create Virtual directory, assign ingrnet account to ISS Application pool, remove popup blockers",,,,
+,,,"6.1","If this is a new install open ISS Manager
+ Ensure if there is an ingrnet account assigned to the Ingrnet  and Dashboard (if you are using dashboard) Application pools
+See attached","
+",,,
+,,,"6.2","In ISS Manager > Sites > Default website > Integrity, under ISS section, open Authentication
+Ensure Anonymous Authentication is disabled","
+",,,
+,,,"6.3","If Dashboard is applicable to testing and already installed:
+ In ISS Manager > Sites > Default website > Dashboard, under ISS section, open Authentication
+Ensure Anonymous Authentication is disabled","
+",,,
+,,,"6.4","Admin Utility> Virtual Directory - If you havnt previously opened the webpage: create the virtual directory
+Site name: Default Site
+Application name: Integrity
+Host name: your integrity server name 
+ (If the VM has a secure SSL certificate enter the Fully Qualified Domain name <Server name>.ingrnet.com and check Use Secure Connection)
+example: https://iahcvppasisqa19.ingrnet.com/integrity
+Save","
+",,,
+,,,"6.5","If Dashboard is applicable to testing:
+Go to Maintenance > Dashboard: 
+Populate dashboard url 
+ If the VM has secure SSL Certificate: Ensure the Dashboard url  has the Fully Qualified Domain name https://<Server name>.ingrnet.com/dashboard
+Save
+","
+",,,
+,,,"6.6","Go to Users and Groups. Ensure Windows authentication is selected
+Under groups tab, ensure your domain group is under admin group, if not Edit Group > in the popup, Choose Windows Group and Add your domain group and save
+iisreset","
+",,,
+,,,"6.7","In your browser ensure that popups are not blocked - see attached screenshot for where this is indicated","
+",,,
+,,,"7","iisreset
+ Open Cyber webpage>Topology
+Expand Perspective Editor and under Inventory, enable MAC Address
+Click Apply and collapse Perspective Editor
+Click the filter icon in upper tool bar to open Map Display Filters, enable Link Info and close the popup
+Navigate to the network switch DEVLAB-HIR-M102
+Zoom in enough to see the Inventory Information for Mac Addresses for all nodes
+You are going to test the recon nodes so you can drag any overlapping nodes you dont want out of the way
+
+"," The switch has a link to 2 Recon nodes
+
+ The links have a label at each end (zoom in!) 
+At the Recon end the label is similar to ""Network Adaptor.....""
+At the switch end the label is a number in the format ""x/y"" 
+",,,
+,,,"8","Right click the Switch > Details and in the Details, popup select MAC Tab
+","The Interface column numbers for the rows with Type = Endpt match the numbers on the links at the switch end (""x/y"") that link to the 2 recon assets 
+
+The 2 rows in the MAC table with the link interface numbers above have the Mac addresses displayed in the Recon Nodes' Perspective information
+",,,
+,,,"9","Find the Switch DEVLAB-CIS-2960X
+","It has one Recon Device attached.
+The link has a label at each end
+At the Recon end the label similar to ""Network Adaptor.....""
+At the switch end the label is Gi/1/0/13
+",,,
+,,,"10","Right click the Switch > Details and in the Details, popup select MAC Tab
+","The Interface column number for the row with Type = Endpt matches the numbers on the link at the switch end that links to the recon node 
+
+The MAC table row with the link interface number above has the Mac address displayed in the Recon Node's Perspective information
+",,,
+,,,"11","Test link Info is correct between Network devices and LLDP Discovery assets
+ In the Details popup for Switch DEVLAB-HIR-M102 select LLDP tab.
+","Under remote Device column, the linked switches are listed, and the LLDP Discovery Device, DEVLAB-CIS-SG200-26.
+The Local Int numbers match the labels on the links to these switches/LLDP Device
+",,,
+,,,"12","Click on the LLDP Discovery asset and bring up Details -Properties","The Remote Data value matches the Local Int on DEVLAB-HIR-M102 
+",,,
+,,,"13","Click on 2 of the  switches connected to DEVLAB-HIR-M102 in turn and open Details - LLDP tab","The Remote Device column includes the DEVLAB-HIR-M102
+The Remote Int is representative of the same link as the Local Int on DEVLAB-HIR-M102, although its in a different format (e.g. port-004-00004 represents 4/4... )
+",,,
+"67869","Test Case","ISS\Cyber Integrity\Topology\ Topology map UI display, Navigation, Perspectives, Favorites",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite: 
+On VM with test build: restore and upgrade the linkages database that is located here:
+ \QASTORE01\Database Backups\Integrity Datasets_Databases\REGRESSION TEST DATABASES\7.3.1 \Topology Linkages 
+On one of the Release Build VMs (IAHcVPPASSQLQA2 or IAHcVPPASISQA09) restore and connect to a release version of the same database 
+Due to a bug fix in 8.0.0.63 - see links- delete the topology asset and re-add in via Admin Utility Asset Configuration and add a new Topology import schedule and run it
+","
+",,,
+"74603","Shared Steps",,"2","SHARED STEP: Applying a Permanent License for Assets and Modules",,,,
+,,,"2.1","Open Admin Utility > licensing. Create a new license. 
+FOR INTEGRITY. Click Begin and in the popup, click  I agree and click Next till you see the code. Copy the code.
+ Go to licensing site ( the link is in Summary because it doesnt navigate to the url from this page)
+Paste the code into Installation ID.
+Use a QA name - Sue/Nick/Harsha - in Search and click on the name link for a license for PAS Global LLC unless your main TC called for another license )e.g. Georgia-Pacific - Leaf River for GP)
+Click Verify 
+The assets/modules supported by the license are listed and there is a Temporary license Key displayed below the gridded list. Copy this license and paste it into the admin utility popup in the lower field which says Enter that code here and click Next and Close
+This will close Admin Utility and give you a temporary license.
+ To get the permanent license: Get the QA you selected in Search to send you the licenseinfo txt file which they will have received in email and drop it into PAS\Integrity folder
+Relaunch Admin Utility > licensing  
+","Validate you have 
+Customer Name: PAS Global LLC and Asset Models include the ICS Assets or PAS assets that you will be testing 
+
+",,,
+,,,"2.2","FOR DASHBOARD, go to the first wizard page for License and perform the same steps as above","
+",,,
+,,,"2.3","FOR ICS
+From same site as above select   PAS Global LLC - QA Group - Cyber Integrity IM license which is for ICS
+You can use Harsha or Sues User name in licensing app and contact them to get the license.txt file
+(Note- use a temp license for dashboard because the ICS license doesnt support all the assets in the prep DB)
+
+","
+",,,
+,,,"3","On both VMs:
+Go to Cyber page > Topology","A series of nodes representing the available PCs network switches, firewall, Asset Discovery Assets (identified by the binocular icons) in the location are displayed
+The nodes are the same on both VMs
+Scroll bars are added to cover the larger real estate",,,
+,,,"4","Go to the pink Windows Overview box in lower left corner","Dragging this box around allows you to navigate across the larger screen",,,
+,,,"5","Click Zoom to Fit icon at the top","The entire map zooms out to fit on the screen",,,
+,,,"6","Click Zoom in icon at the top","The screen size expands and zooms in again",,,
+,,,"7","Perspective Editor
+On both VMs:
+ Click in the Perspective Editor drop down
+Select all the checkboxes under inventory and Apply
+Collapse the Perspective Editor
+ Click Zoom in icon repeatedly 
+ ","The Inventory items applicable to each node are displayed and match on both VMs
+Navigating around the screen displays applicable inventory items for each node for Recon and Network devices",,,
+,,,"8"," In Perspective Editor drop down: Click the icon at the top to Select None, In the drop down, expand Vulnerabilities and Patches, click the checkboxes for Severity and Status and apply
+Zoom in ","The inventory items are removed from the Nodes and Vulnerability and Patch information is displayed and the severities populated- see example screenshot. 
+The display is the same on both VMs
+Note: VM data is covered in depth in another TC. This focus is for the perspective editor functionality
+",,,
+,,,"9"," In perspective editor add inventory item for MAC Address and apply
+
+","The Mac address is displayed by the recon nodes as well as Vulnerability and patch information
+
+",,,
+,,,"10","Hover the Trash can icon button beside the Select a Perspective drop down.
+"," The Trash icon button shows a disabled hover image, The hover text is Delete perspective ",,,
+,,,"11"," Click the save icon on the tool bar next to the Select a Perspective field
+","There is a popup Save Perspective to save the current perspective selection
+",,,
+,,,"12","Enter a name and Save
+Navigate to Topology from left Nav to reset the page to its original display and zoom in
+
+","Only the default IP address is displayed alongside each Recon and Network devices node",,,
+,,,"13","Select the new addition in Select a Perspective drop down and expand the  Perspective drop down
+","The selections made for the saved perspective are checked
+The trashcan icon button next to Select a Perspective drop down is orange and enabled
+",,,
+,,,"14","Zoom in","The selected inventory item, VM and patch information is displayed for the recon nodes
+The Perspective editor drop down has the saved items in the list checked.",,,
+,,,"15","Map Display Filter options - Navigation menu
+On both VMs zoom out to see more of the nodes:
+ Click the filter icon in tool bar and in the Map Display Filters popup enable the Navigation menu
+Then close the Map Display Filters popup
+","A navigation popup is displayed listing all the Workstation nodes, LLDP Discovery nodes, Asset Discovery, DCS, Firewalls, Routers and Switches 
+The list is the same in both VMs Navigation menus",,,
+,,,"16","
+ In the Navigation menu, click on a Recon Node
+ ","The map navigates you to that node (you may have to move the Navigation menu to see it)",,,
+,,,"17","Navigation menu update and search
+ On both VMs with the Navigation menu open:
+ Use the Navigation menu to locate the DCS node:
+ Expand the DCS node down to several sub level nodes ","The Navigation menu updates on the fly to include all the DCS sub nodes and associated items currently visible in the map
+The expanded list is the same on both VMs",,,
+,,,"18","In the Navigation menu click on one of the sub nodes now visible under the DCS ","You are navigated in the map to that node and it is highlighted in blue - see  screenshot example",,,
+,,,"19","In the Navigation menu use search field at the top of the popup to enter a single word to filter on one or more items in the list and click the refresh icon button below the search field
+
+","The Navigation list returns the results of that search and the button icon has changed to a filter
+NOTE ! See Summary for why this doesnt always work!",,,
+,,,"20","In the Navigation menu scroll to the top
+ Click the filter icon button below search to clear the filter. Enter two search words represented in the Navigation list   and select the word OR and click the Refresh icon button","The Navigation list returns the results of the OR filter",,,
+,,,"21","Click the filter icon button below search to clear the filter. Enter two search words represented in the Navigation list, select the word AND and click the Refresh icon button
+","The Navigation list returns the results of the AND filter
+",,,
+,,,"22","Map Display Filter options and Hide and Unhide
+Minimize the Navigation menu and zoom out
+ Right click on any Node (get a screenshot or note its name)  and in the dial popup click Hide/Show","The node is hidden",,,
+,,,"23","Click the Filter icon and in Map Display Filter enable Hidden NodesClose the Map Display Filter popup","The Node is displayed again, with a blue border but it is grayed out to indicate it is still hidden",,,
+,,,"24","Right click in the hidden node again and in the dial popup click Hide/Show ","The node is displayed again in normal coloration",,,
+,,,"25","Test Favorites
+Ensure the Perspective that you saved is selected
+ Zoom in enough on one or 2 nodes to see the Perspective Editor info.
+Take a screenshot
+Click the save button next to Favorites field","There is a popup to enter a Favorites name",,,
+,,,"26","Enter a name for the Favorite","The Favorites drop down includes your addition",,,
+,,,"27","Refresh the web page and  return to topology
+
+","The map is displayed expanded but neither the perspective nor Favorite is selected , the map is zoomed out",,,
+,,,"28"," In Favorites drop down select your favorite
+","The view changes to display just the location and zoom level and perspective information that matches your screenshot from previous step
+",,,
+,,,"29","Make another change to your favorite and click Save button. Click OK to the popup to orverride
+Change to a sub location and then return to the same location you were in when you saved the favorite
+Select the favorite again","Your latest changes are saved",,,
+,,,"30","Ready for Successor TC 63241","
+",,,
+"83849","Test Case","ISS\Topology\Verify Topology asset  schedule will create its applicable VM data on new DB",,,,"Integrity\_Aha-HexagonPPM\Cyber\Integrity\Topology","FIRTH Suzan M (Sue) <suzan.firth@hexagon.com>","Ready"
+,,,"1","Prerequisite: Create a new DB
+copy these data sets locally and unzip if needed
+Recon:
+T:\QASTORE01\zzAutomation_Data\QTP_Data\Integrity Data\PAS Recon Data\Integrity DTL VMs NEW\ Recon Windows10Laptop.7z
+Network devices
+T:\QASTORE01\zzAutomation_Data\QTP_Data\Integrity Data\PAS Network Devices
+NetworkImport
+
+
+ ","
+",,,
+,,,"2","In Shared steps below follow the Shared Step below to import
+Recon
+network devices
+Cyberintegrity
+inventory
+topology","
+",,,
+"61807","Shared Steps",,"3","SHARED STEP: Add Asset Model",,,,
+,,,"3.1","Add an Asset Model
+Admin Utility>Asset Models
+Select the Asset model(s)  required for your test and click the button '>' to add them to the righthand panel
+Click Import
+The message 'Asset Model(s) Imported successfully' will be displayed at the bottom of the screen when complete which may take several minutes
+Reopen Admin Utility >Asset Models and you will see the new asset model version in Imported column
+ ","
+",,,
+,,,"4","Go to Asset Configuration. Add an asset for 
+Recon - Click browse to location of dataset and save
+network devices - Click browse to location of dataset and save
+Cyber
+inventory
+Follow the instructions in the shared stop below to create schedules for 
+Recon
+Network devices","Validate there is a topology asset model created automatically",,,
+"61823","Shared Steps",,"5","SHARED STEP: Create Asset Model Schedule",,,,
+,,,"5.1","Create Asset Model Schedule
+Datacollector service is running in Admin Utility> Service Administration
+ Prerequisite: 
+ The Asset model(s) you are going to use has been imported 
+ An Asset(s) created in Asset configuration with Browse folder pointing to local dataset
+Any Connection databases have been configured in Connection Definitions if applicable 
+Go to Admin Utility>Schedules
+Click Add
+Enter a schedule name that is copied from the Asset Configuration > Name field entry for this dataowner   
+Server name will default to your current integrity server
+ Go to Sequences Tab. Select your Asset from the drop down
+For all Assets apart from recon: select All or something similar like All Sequences from Definitions and click '>' to move it to sequences panel
+For Recon scroll down the Definitions list and select All XML
+Click OK
+The schedule is added. Right click on the schedule row and Run Now
+If Run is disabled; restart Data collector service","There are no errors not previously documented as expected in the main test case
+For example: The Recon import will generate expected ""errors"" - refer to the qastore data folder for a readme.txt",,,
+,,,"5.2","Go to Admin utility > Asset Explorer Configuration and ensure that you see your asset and you can expand the subfolders to see the data objects
+If you dont do this before going to web page automation, then Asset Explorer in the web will show you 'no data owners available'
+This is a known and Expected Idiosyncrasy.","
+",,,
+"73832","Shared Steps",,"6","SHARED STEP: Run Inventory Items for Asset Model testing",,,,
+,,,"6.1","Test Inventory items import with the new asset models for all Asset Models
+ When all the asset models are complete:
+copy \Datacollector\Asset Models\PAS Inventory Items\PASInventory.accdb to \data collector folder
+Install the Access DB Engine Office 10 64 bit from the ISS_Setup.exe- Additional Software link
+Amin Utility: Asset Models. Import PAS Inventory Items asset model
+Admin Utility Asset Configuration. Create an Inventory  Asset
+Admin Utility, Schedules. Create a schedule for inventory items and add sequences for all Asset models that you have run that have an inventory sequence and run the schedule 
+Use the sequences starting with Create Inventory items without Tree","There are no errors in Inventory Items import log or event viewer",,,
+,,,"7","In the Shared Step below, create a cyber tree with 2 parent child sublocations - see attached screenshot","
+",,,
+"65643","Shared Steps",,"8","SHARED STEP: Create a Cyber Hierarchy with Inventory",,,,
+,,,"8.1","Build a Cyber Hierarchy
+Prerequisite: Data owners and  PAS Inventory Items schedule has been run 
+Open <Install folder>DataCollector\ConfigurationManager as Admin
+ In upper drop down select  CyberInventory.
+ Create the top-level location in the Cyber Tree: Right click in left Panel > Add Child Node and name it e.g. Plant A or Enterprise. (there may be an error popup when you do this, click OK and ignore it) 
+ 
+From Asset drop down: Select one of your Assets e.g. Recon 
+From Object Type select Data owner from drop down and the data owner name will populate in the panel below. Select the name in the Panel and drag onto the top level node. See screenshot
+Right click on the left panel and refresh and the Top Node will have a '+'. 
+ Expand '+' and you will see a sublevel node for (example) your Recon or Fox data owner - see second screenshot
+ 
+Repeat for other Recon, Network Devices and ICS assets as applicable.
+","
+",,,
+,,,"8.2","If you need inventory data perform the next steps. If you dont need inventory data you can stop here","
+",,,
+,,,"8.3","If you have ICS or DCS Assets:
+ With your ICS e.g. Fox data owner selected in Asset: From Object Type select Inventoryitem
+ When selecting ICS assets you will see multiple Inventory items, you want the one with *****DATAOWNER**** in the name 
+ Select the ***DATAOWNER*** item and drag it onto the ICS node e.g. the Fox node. See screenshot
+","
+",,,
+,,,"8.4","If you have Recon Assets:
+ With your Recon data owner selected in Asset: From Object Type select Inventory_Asset and drag the data owner name (there is only one) from the panel and drop it onto the recon node. See screenshot ","
+",,,
+,,,"8.5","If you have Network Devices Assets
+ With your Network Devices data owner selected in Asset: From Object Type select Inventory_folder and drag NetworkDevices_All  from the panel and drop it onto the Network Devices node. ","
+",,,
+,,,"8.6"," You dont need to save, it does that automatically
+ Post condition:
+ Ready for Admin Utility Schedule for Cyber 
+","
+",,,
+,,,"9","Return to Admin Utility - Schedules. Add a schedule for Cyber and run it","
+",,,
+,,,"10","Go to Asset Explorer Configuration","The assets are created with sub folders for recon and network devices",,,
+"68960","Shared Steps",,"11","SHARED STEP: Configure Virtual Directory with Fully Qualified Domain Name",,,,
+,,,"11.1","Configure Virtual Directory for a secure url
+ Admin Utility: Go to Virtual Directory
+Note! if you are doing this on a new Prep database, set Port = 80 FIRST or Admin utility will crash!
+Site Name select Default Website
+Application name: Enter or select Integrity
+Enter the servers Fully Qualified Domain Name (FQDN) in the field Host Name
+This will be in the format <VM name>.ingrnet.com e.g.:
+iahcvppasisqa19.ingrnet.com 
+ Check the box Use Secure connection
+Save
+","The web URL field is populated with the https prefix 
+The url displays the FQDN followed by /integrity
+example:
+ https://iahcvppasisqa19.ingrnet.com/integrity/
+ There are no errors when you save",,,
+,,,"11.2","Only If your test case requires Dashboard do the following
+ Go to Maintenance page and enter/edit Dashboard url with FQDM
+e.g 
+https://IAHcVPPASISQA19.ingrnet.com/dashboard or
+http:// IAHcVPPASISQA20/dashboardClick save
+In Dashboard Config > Go to Step 5 enter the Integrity FQDN
+e.g.
+https://IAHcVPPASISQA19.ingrnet.com/integrity or
+ http:// IAHcVPPASISQA20/integrity 
+Click Next 
+Clear Compiler and restart dashboard","
+",,,
+,,,"12","iisreset","
+",,,
+,,,"13","Go to web page cyber > Inventory>Browse","Verify data is in inventory for Recon and network devices",,,
+,,,"14","In shared step below follow the steps to import VM and Patch Mgt  asset model and run the schedule","
+",,,
+"53467","Shared Steps",,"15","SHARED STEP: Download and update the latest Vulnerability and/or Patch Management Asset model ",,,,
+,,,"15.1","Download the latest Vulnerability and/or Patch Management  Asset model from sftp.pas.com
+Login with credentials username: PASVulnerabilityMgt, pw Pas!Vul3!21PAS
+Select Web option and go to the folder for Vulnerability and/or Patch Management
+See screenshot.
+Select  the .iam you want (VM Asset model should be a max of 24 hrs old, PM Asset Model should be a max of 1 month old) and Download
+Copy Vulnerability.iam/ to 
+<Integrity Install>\Integrity\DataCollector\Asset Models\PAS Vulnerability Management and 
+Patch Management.iam to <Integrity install>\Integrity\DataCollector\Asset Models\PAS Patch Management
+ Reopen Admin utility> Asset Models. You will see the updated model version(s) in the left column.
+ 
+  Import the asset models into the database
+Import VM and patch management asset models via Task scheduler -these asset models are far too large to run via Admin utility asset model import. See attached doc for how to do this
+NOTE! This usually takes 2-6 hours depending on database size- or longer and may well fail the first time you run it. 
+Reopen Admin utility > Asset Models
+
+"," Validate no errors in event log
+ You will see the latest date of the asset model in the Imported column in Admin Utility>Asset Models 
+",,,
+,,,"15.2","To double check all the data got imported (which isnt guaranteed even if it all looks good so far)
+ Go to PAS\Integrity\Data Collector and open Asset Model Builder as Admin
+Go to Tools menu and to check VM data click NVD matching and for PM data click Patch Evaluation.
+ ","There is data in both popups, see attachments..it wont be exactly like this but there should be plenty of data
+An empty window is Bad and it didnt work",,,
+,,,"15.3","ONLY  For a database that does NOT  contain 4.1 asset model or higher
+After importing the VM Asset model the FIRST time
+In Admin Utility >Asset Configuration: Ensure there is a VM asset. if not Add an Asset called VM for Asset Model PAS Vulnerability Management.
+  In Admin Utility>Schedules create  Schedule for Vulnerability Management - Sequence VM Rectify PropertyNames. 
+ Run it. This will take only a minute or so.
+Rerun the VM asset model import to add the data into the clean VM database tables
+Continue with the steps below ","
+",,,
+,,,"15.4","NOTE!! For database upgrades or any TC that requires both Patch Mgt and VM asset model updates , ensure you run the Patch Management schedule BEFORE the VM asset model. The Vmatching uses patch management data and can significantly increase the number of Vmatches","
+",,,
+,,,"15.5","For Patch Management if required for your test case
+ In Admin Utility >Asset Configuration: Ensure there is a Patch Management asset. if not Add an Asset called Patch Management for Asset Model PAS Patch Managment
+ In the Configuration field Recon Data owners(s)) add ALL the recon dataowners in the database comma delimited like this:
+Recon1,Recon2,...etc See screenshot example
+Save  
+ In Admin Utility>Schedules either create or rerun Schedule for Patch Management - Sequence All ","Validate no errors in Schedule import log or event log",,,
+,,,"15.6","To run  Vulnerability matching if required for your test case
+In Admin Utility >Asset Configuration: Ensure there is a VM asset. if not Add an Asset called VM for Asset Model PAS Vulnerability Management.
+  In Admin Utility>Schedules either create or rerun Schedule for Vulnerability Management - Sequence VM Import NVD Data 
+This can also take many hours depending on database size
+","Validate no errors in Schedules Import log or event log",,,
+,,,"16","Go to Admin Utility>Schedules
+Add a schedule for Topology and run it","There are no errors in log for import",,,
+"48963","Shared Steps",,"17","SHARED STEP: EventViewerCheck",,,,
+,,,"17.1","Open Event Viewer 
+ In left panel navigate to Application and Service Logs ->IntegrityMOC
+If Event Viewer is already open, then right click IntegrityMOC and refresh","Validate there are no warnings or errors during any of the imports
+Validate that any Information rows that occurred during the import dont have any sql or user unexpected messages.
+Any potentially problematic messages should be reported in a screenshot attached to the task and QA or a Dev notified (usually Jered or Chezhian)",,,
+,,,"17.2","If Applicable to Dashboard testing:
+Select PAS-NOCDash","Validate there are no warnings or errors during any of the calculations
+Any potentially problematic messages should be reported in a screenshot attached to the task and A Henry notified",,,
+,,,"18","iisreset
+Go to Vulnerability Management > Browse to check the data has imported OK
+Get a screenshot which shows the counts for each CVE severity
+
+","
+",,,
+,,,"19","go to Topology.
+Expand the locations to show the recon and network devices devices in both locations","The device nodes that are seen in VM Browse  have a background color representing their max severity for vmatched CVEs",,,
+,,,"20","Right click on a Recon node in each sublocation and open Details","The Details Summary has VM counts and coloration for CVE counts for each severity
+The background color of the nodes represent the maximum severity with counts
+NOTE!! Do not expect the Vmatch counts in topo to match VM browse - refer comment in Summary",,,
+,,,"21","In Details popup go to Vulnerabilities tab and sort criticality","The max severity matches the Summary tab",,,
+,,,"22","Right click on a Network node in each sublocation and open Details","The Details Summary has VM counts and coloration for CVE counts for each severity
+The background color of the nodes represent the maximum severity with counts",,,
+,,,"23","In Details popup go to Vulnerabilities tab and sort criticality","The Details Summary has VM counts and coloration for CVE counts for each severity
+The background color of the nodes represent the maximum severity with counts",,,
