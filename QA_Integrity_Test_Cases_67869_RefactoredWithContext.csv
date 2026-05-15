@@ -1,0 +1,138 @@
+ID,Work Item Type,Title,Test Step,Step Action,Step Expected,Area Path,Assigned To,State,Tags
+,"Test Case","Topology UI - Basic Navigation and Zoom Controls",,,,"Integrity\_Aha-HexagonPPM\Cyber\Corporate","BORKOWSKI nicholas <Nicholas.borkowski@hexagon.com>","Design",
+,,,"1","Prerequisites:
+On VM with test build: restore and upgrade the linkages database that is located here: \QASTORE01\Database Backups\Integrity Datasets_Databases\REGRESSION TEST DATABASES\7.3.1 \Topology Linkages
+On one of the Release Build VMs (IAHcVPPASSQLQA2 or IAHcVPPASISQA09) restore and connect to a release version of the same database
+Due to a bug fix in 8.0.0.63 - see links- delete the topology asset and re-add in via Admin Utility Asset Configuration and add a new Topology import schedule and run it
+Execute Shared Step 74603: SHARED STEP: Applying a Permanent License for Assets and Modules","All prerequisites completed successfully. Both VMs are properly configured with the test database and licensed appropriately."
+,,,"2","On both VMs: Navigate to Cyber page > Topology","A series of nodes representing the available PCs network switches, firewall, Asset Discovery Assets (identified by the binocular icons) in the location are displayed. The nodes are the same on both VMs. Scroll bars are added to cover the larger real estate. This validates that the Topology module is properly rendering network topology from the Integrity data collection and Asset Models normalization layer."
+,,,"3","Go to the pink Windows Overview box in lower left corner of the Topology view. Click and drag this box around the map area.","The Overview box provides a miniature navigation view of the entire topology map. Dragging this box allows you to navigate across the larger screen real estate efficiently, showing different areas of the topology as you move the box."
+,,,"4","Click the 'Zoom to Fit' icon in the top toolbar","The entire topology map zooms out to fit all nodes within the visible screen space, allowing you to see the complete network topology at once without scrolling."
+,,,"5","Click the 'Zoom In' icon in the top toolbar","The screen size expands and zooms in, enlarging the nodes and making details more visible. This validates the zoom control functionality for detailed node inspection."
+,,,"6","Click the 'Zoom In' icon repeatedly several more times","The map continues to zoom in progressively with each click, allowing for increasingly detailed inspection of individual nodes and their properties. The topology rendering engine properly scales the visualization."
+,,,"7","Summary: Successfully verified basic Topology UI navigation and zoom controls. The Topology visualization engine properly renders network device nodes from the Integrity inventory system, normalized through Asset Models. Navigation controls (Overview box, Zoom to Fit, Zoom In/Out) function correctly across both test and release builds, enabling efficient topology map exploration.","Test completed successfully validating core navigation features of the Topology module within the Cyber Integrity product suite."
+,"Test Case","Topology UI - Perspective Editor Functionality",,,,"Integrity\_Aha-HexagonPPM\Cyber\Corporate","BORKOWSKI nicholas <Nicholas.borkowski@hexagon.com>","Design",
+,,,"1","Prerequisites:
+Complete 'Topology UI - Basic Navigation and Zoom Controls' test case
+Topology page is open on both test and release VMs
+Both VMs are at the Cyber > Topology page with nodes visible","Prerequisites completed. The Perspective Editor allows customization of what asset attributes are displayed on topology nodes, leveraging Asset Models metadata."
+,,,"2","Perspective Editor - Inventory Display:
+On both VMs: Click in the Perspective Editor drop down
+Select all the checkboxes under 'Inventory' section
+Click Apply button
+Collapse the Perspective Editor
+Click Zoom in icon repeatedly","The Inventory items applicable to each node are displayed on the topology map and match on both VMs. Navigating around the screen displays applicable inventory items for each node for Recon and Network devices. This validates that the Perspective Editor correctly applies Asset Models inventory properties to the visual representation."
+,,,"3","Perspective Editor - Vulnerabilities and Patches Display:
+In Perspective Editor drop down: Click the icon at the top to 'Select None'
+In the drop down, expand 'Vulnerabilities and Patches' section
+Check the checkboxes for 'Severity' and 'Status'
+Click Apply
+Zoom in to see node details","The inventory items are removed from the Nodes and Vulnerability and Patch information is displayed with the severities populated (see example screenshot). The display is the same on both VMs. Note: VM data is covered in depth in another TC. This focus is for the perspective editor functionality. This demonstrates integration between Vulnerability Management module data and Topology visualization."
+,,,"4","Perspective Editor - Combined Display:
+In perspective editor, add inventory item for 'MAC Address' (in addition to existing Vulnerabilities and Patches)
+Click Apply","The MAC address is displayed by the recon nodes as well as Vulnerability and patch information. This validates that multiple perspective attributes from different Asset Models can be displayed simultaneously on topology nodes."
+,,,"5","Verify Delete Perspective Control State:
+Hover over the Trash can icon button beside the 'Select a Perspective' drop down","The Trash icon button shows a disabled hover image. The hover text displays 'Delete perspective'. This is expected because no saved perspective is currently selected, only the default/unsaved configuration."
+,,,"6","Save Custom Perspective:
+Click the save icon on the tool bar next to the 'Select a Perspective' field","A popup dialog appears titled 'Save Perspective' to save the current perspective selection. This allows users to create reusable view configurations."
+,,,"7","Enter a descriptive name for the perspective (e.g., 'MAC_VM_Patch_View') and click Save button","The perspective is saved successfully. The name appears in the 'Select a Perspective' drop down list."
+,,,"8","Reset View and Verify Default:
+Navigate to Topology from left Nav to reset the page to its original display
+Zoom in on some nodes","Only the default IP address is displayed alongside each Recon and Network devices node. This confirms that without a selected perspective, the system returns to default attribute display behavior."
+,,,"9","Load Saved Perspective:
+Select the newly created perspective from 'Select a Perspective' drop down
+Expand the Perspective drop down to verify selected items","The selections made for the saved perspective are checked in the editor. The trashcan icon button next to 'Select a Perspective' drop down is now orange and enabled (indicating a saved perspective is selected and can be deleted)."
+,,,"10","Verify Saved Perspective Display:
+Zoom in on nodes","The selected inventory item (MAC Address), VM (Vulnerability Management) and patch information is displayed for the recon nodes. The Perspective editor drop down has the saved items in the list checked. This validates that saved perspectives correctly persist and restore all selected attributes."
+,,,"11","Summary: Successfully verified Perspective Editor functionality in Topology. The Perspective Editor enables customization of node attribute display by selecting various properties from Asset Models including Inventory, Vulnerabilities, and Patches. Custom perspectives can be saved, retrieved, and deleted. This feature enhances topology visualization by allowing users to focus on specific asset attributes relevant to their operational or security analysis needs.","Test completed successfully validating Perspective Editor integration with Asset Models and data from Inventory and Vulnerability Management modules."
+,"Test Case","Topology UI - Navigation Menu and Search Functionality",,,,"Integrity\_Aha-HexagonPPM\Cyber\Corporate","BORKOWSKI nicholas <Nicholas.borkowski@hexagon.com>","Design",
+,,,"1","Prerequisites:
+Complete 'Topology UI - Perspective Editor Functionality' test case
+Topology page is open on both test and release VMs
+A custom perspective is selected (optional but recommended for visibility)","Prerequisites completed. The Navigation Menu provides a hierarchical listing of all topology assets enabling quick navigation to specific devices."
+,,,"2","Enable Navigation Menu:
+On both VMs, ensure you are zoomed out to see more nodes
+Click the filter icon in the top toolbar
+In the 'Map Display Filters' popup, enable the 'Navigation menu' checkbox
+Close the Map Display Filters popup","A navigation popup is displayed listing all device types: Workstation nodes, LLDP Discovery nodes, Asset Discovery, DCS, Firewalls, Routers and Switches. The list is the same in both VMs Navigation menus. This provides a structured catalog of all assets in the topology, organized by device type from Asset Models."
+,,,"3","Navigate to Specific Node:
+In the Navigation menu, click on any Recon Node (Workstation) name from the list","The map automatically navigates to that node's location (you may need to move the Navigation menu popup to see it clearly). The selected node is highlighted on the topology map, enabling quick location of specific assets in complex topologies."
+,,,"4","Navigation Menu Dynamic Update:
+On both VMs with the Navigation menu open:
+Use the Navigation menu to locate a DCS node
+Click the '+' to expand the DCS node
+Continue expanding down to several sub-level nodes beneath the DCS","The Navigation menu updates dynamically on the fly to include all the DCS sub nodes and associated items currently visible in the map. The expanded list is the same on both VMs. This demonstrates the hierarchical nature of ICS/DCS assets in the topology and the Navigation menu's ability to reflect nested device relationships."
+,,,"5","Navigate to Sub-Node:
+In the Navigation menu, click on one of the sub nodes now visible under the expanded DCS hierarchy","You are navigated in the map to that specific sub-node and it is highlighted in blue (see screenshot example). This validates navigation to deeply nested assets within hierarchical device structures."
+,,,"6","Search - Single Word Filter:
+In the Navigation menu, use the search field at the top of the popup
+Enter a single word to filter on one or more items in the list (e.g., part of a device name)
+Click the refresh icon button below the search field","The Navigation list returns the results of that search and the button icon changes to a filter icon (indicating an active filter). NOTE: See Summary for why this doesn't always work! The search provides quick filtering of large device lists."
+,,,"7","Search - OR Operator:
+In the Navigation menu, scroll to the top
+Click the filter icon button below search to clear the previous filter
+Enter two search words represented in the Navigation list
+Select the word 'OR' from the operator dropdown
+Click the Refresh icon button","The Navigation list returns the results of the OR filter, showing all nodes that match either search term. This enables flexible searching across multiple device names or types."
+,,,"8","Search - AND Operator:
+Click the filter icon button below search to clear the previous filter
+Enter two search words represented in the Navigation list
+Select the word 'AND' from the operator dropdown
+Click the Refresh icon button","The Navigation list returns the results of the AND filter, showing only nodes that match both search terms. This enables more precise filtering when looking for devices with specific combined attributes."
+,,,"9","Summary: Successfully verified Navigation Menu and Search functionality in Topology. The Navigation Menu provides a hierarchical device catalog organized by asset type (Workstations, Routers, Switches, DCS, etc.) as defined in Asset Models. Dynamic expansion reveals nested device relationships in ICS environments. Search functionality with AND/OR operators enables efficient location of specific devices in large topologies. These features significantly improve usability for operational teams managing complex industrial control system networks.","Test completed successfully validating Navigation Menu integration with hierarchical Asset Models and search capabilities."
+,"Test Case","Topology UI - Map Display Filters Hide and Unhide Nodes",,,,"Integrity\_Aha-HexagonPPM\Cyber\Corporate","BORKOWSKI nicholas <Nicholas.borkowski@hexagon.com>","Design",
+,,,"1","Prerequisites:
+Complete 'Topology UI - Navigation Menu and Search Functionality' test case
+Topology page is open with Navigation menu visible
+If Navigation menu is open, minimize it for better visibility","Prerequisites completed. Hide/Unhide functionality allows users to temporarily remove nodes from view to reduce visual clutter in complex topologies."
+,,,"2","Hide a Node:
+Zoom out to see multiple nodes
+Right click on any Node (take a screenshot or note its name for reference)
+In the dial popup menu, click 'Hide/Show'","The selected node disappears from the topology map view. This allows users to simplify complex topology views by temporarily hiding devices not relevant to their current analysis."
+,,,"3","Enable Hidden Nodes Display:
+Click the Filter icon in the top toolbar
+In 'Map Display Filters' popup, enable 'Hidden Nodes' checkbox
+Close the Map Display Filter popup","The previously hidden node is displayed again, but with a blue border and grayed out appearance to indicate it is in a hidden state. This visual differentiation helps users understand which nodes are hidden while still seeing their topology relationships."
+,,,"4","Unhide the Node:
+Right click on the hidden node (the grayed out one with blue border)
+In the dial popup menu, click 'Hide/Show'","The node is displayed again in normal coloration without the blue border or gray appearance, fully restored to the topology view. This confirms the toggle behavior of the Hide/Show feature."
+,,,"5","Test Multiple Nodes Hide/Unhide (Optional Extended Validation):
+Right click on 2-3 different nodes and hide each one
+Enable 'Hidden Nodes' in Map Display Filters
+Verify all hidden nodes appear grayed out with blue borders
+Individually unhide each node
+Verify each returns to normal display","All nodes respond correctly to Hide/Show commands. Multiple nodes can be hidden simultaneously and managed independently. This validates the robustness of the Hide/Show feature for managing visibility of multiple assets."
+,,,"6","Summary: Successfully verified Map Display Filters Hide and Unhide functionality in Topology. The Hide/Show feature allows users to temporarily remove nodes from active view to reduce visual complexity in large topology maps. Hidden nodes can be revealed in a grayed-out state for reference while maintaining visual distinction from active nodes. This feature enhances usability for operational teams analyzing complex network topologies by enabling focus on specific subsets of devices while maintaining awareness of the complete topology structure.","Test completed successfully validating Hide/Unhide node visibility management features."
+,"Test Case","Topology UI - Favorites Management",,,,"Integrity\_Aha-HexagonPPM\Cyber\Corporate","BORKOWSKI nicholas <Nicholas.borkowski@hexagon.com>","Design",
+,,,"1","Prerequisites:
+Complete 'Topology UI - Perspective Editor Functionality' test case
+Topology page is open with a saved Perspective selected
+User has already created a custom perspective (from Perspective Editor test case)","Prerequisites completed. Favorites allow users to save complete topology view states including perspective settings, zoom level, and location for quick recall."
+,,,"2","Set Up View for Favorite:
+Ensure the custom Perspective that you saved is selected in the 'Select a Perspective' dropdown
+Zoom in enough on one or two nodes to see the Perspective Editor information details
+Take a screenshot of the current view for later comparison","The current view is prepared for saving as a favorite. This includes the selected perspective, zoom level, and visible map area."
+,,,"3","Save as Favorite:
+Click the save button next to the 'Favorites' field in the toolbar
+In the popup dialog, enter a descriptive name for the Favorite (e.g., 'NetworkSwitch_DetailView')
+Click Save","The Favorite is saved successfully and appears in the 'Favorites' drop down list. This creates a bookmark to the exact topology view state."
+,,,"4","Reset View:
+Refresh the web page
+Navigate back to Topology from the left navigation menu","The map is displayed in its default expanded state. Neither the custom perspective nor Favorite is selected, and the map is zoomed out. This confirms that the page has reset to default state, allowing validation of Favorite recall."
+,,,"5","Recall Favorite:
+In the 'Favorites' drop down, select your previously saved favorite","The view changes to display exactly the location, zoom level, and perspective information that matches your screenshot from step 2. The saved view state is completely restored including all perspective attributes. This validates that Favorites capture and restore complete topology view configuration."
+,,,"6","Modify and Update Existing Favorite:
+Make changes to the current view (zoom to a different level, pan to a different area, or change perspective settings)
+Click the Save button next to Favorites field
+Click OK to the popup to confirm override of the existing favorite","The updates are saved to the existing favorite, replacing the previous view configuration. This allows users to evolve their favorite views over time."
+,,,"7","Test Favorite Persistence Across Navigation:
+Change to a different sub-location in the topology hierarchy
+Navigate back to the same location you were in when you saved the favorite
+Select the favorite again from the dropdown","Your latest changes are correctly saved and recalled. The favorite accurately restores the updated view state, confirming persistence of modifications."
+,,,"8","Test Multiple Favorites (Optional Extended Validation):
+Create 2-3 additional favorites with different perspectives, zoom levels, and locations
+Give each a descriptive name (e.g., 'VulnSummary_ZoomedOut', 'DCS_Subsystem_Detail')
+Refresh the page
+Sequentially select each favorite from the dropdown
+Verify each restores its unique view configuration","All favorites function independently and correctly restore their specific view states. This validates that multiple favorite view configurations can coexist and be managed simultaneously."
+,,,"9","Summary: Successfully verified Favorites Management functionality in Topology. Favorites enable users to save and quickly recall complete topology view states including selected Perspective (attribute display configuration), zoom level, and map location. Favorites can be updated to reflect refined view preferences. This feature significantly enhances productivity for operational teams who need to regularly monitor specific topology views or device subsets. Integration with Perspective Editor creates powerful customization capabilities for various analysis scenarios such as vulnerability assessment, inventory audits, or specific subsystem monitoring.","Test completed successfully validating Favorites as a view state management feature integrated with Perspectives and topology navigation."
